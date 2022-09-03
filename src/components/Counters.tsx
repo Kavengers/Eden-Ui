@@ -12,18 +12,19 @@ export const Counters = (props: CountersProps) => {
     let choicesList: any[] = [];
     const [items, setItems] = React.useState<any[]>(choicesList);
 
-    const getItems = () => {
+    const getItems = React.useRef(() => {});
+
+    getItems.current = () => {
         let data: number[] = [];
         for (var i = 0; i < props.totalItems; i++) {
             data.push(i+1);
         }
-        return data;
+        setItems(data);
     }
     
     React.useEffect(() => {
-        const updatedList = getItems();
-        setItems(updatedList)
-    }, []);
+        getItems.current();
+    }, []); // Used ref at line number 15 for getItems function to get rid of the "React Hook React.useEffect has a missing dependency: 'getItems'. Either include it or remove the dependency array." Warning
 
     return (
         <div className="counters-wrapper">
